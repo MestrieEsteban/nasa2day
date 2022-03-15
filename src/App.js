@@ -26,7 +26,7 @@ const App = () => {
 					<div className="ImageTitle">
 						{apod.title}
 					</div>
-					<img src={apod.hdurl ? apod.hdurl : apod.hdurl} alt="APOD" className="ImageDay" />
+					<img src={apod.url} alt="APOD" className="ImageDay" />
 					<div className="description">
 						<p>{apod.explanation}</p>
 					</div>

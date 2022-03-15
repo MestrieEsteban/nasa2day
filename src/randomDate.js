@@ -1,18 +1,22 @@
 import moment from 'moment';
 
-export default {
-	randomDate(end = moment(), start) {
-		const endTime = +moment(end);
+	function randomDate(end = moment(), start) {
+		const endTime = +moment(end)
 		const randomNumber = (to, from = 0) =>
-			Math.floor(Math.random() * (to - from) + from);
+			Math.floor(Math.random() * (to - from) + from)
 
 		if (start) {
-			const startTime = +moment(start);
+			const startTime = +moment(start)
 			if (startTime > endTime) {
-			throw new Error('End date is before start date!');
+			throw new Error('End date is before start date!')
 			}
-			return moment(randomNumber(endTime, startTime));
+			return moment(randomNumber(endTime, startTime))
 		}
-		return moment(randomNumber(endTime));
+		return moment(randomNumber(endTime))
 	}
-}
+
+	const randomMethod = {
+		randomDate,
+	}
+
+	export default randomMethod

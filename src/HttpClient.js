@@ -14,12 +14,17 @@ axios.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-
-export default {
-  getApod() {
-    return axios.get(`${nasaEndpoint}planetary/apod`)
-  },
-  getApodByDay(date) {
-    return axios.get(`${nasaEndpoint}planetary/apod`, { params: { date } })
-  },
+function getApod() {
+  return axios.get(`${nasaEndpoint}planetary/apod`)
 }
+function getApodByDay(date) {
+  return axios.get(`${nasaEndpoint}planetary/apod`, { params: { date } })
+}
+
+const apiMethods = {
+	getApod,
+	getApodByDay,
+}
+
+export default apiMethods
+
