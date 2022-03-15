@@ -3,7 +3,7 @@ import HttpClient from "./HttpClient"
 import './styles/App.scss'
 import moment from 'moment'
 import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi'
-import { FcLikePlaceholder, FcLike, FcMenu } from 'react-icons/fc'
+import { FcLikePlaceholder, FcLike } from 'react-icons/fc'
 
 import random from './randomDate'
 
