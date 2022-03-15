@@ -3,7 +3,7 @@ import HttpClient from "./HttpClient"
 import './styles/App.scss'
 import moment from 'moment'
 import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi'
-import { FcLikePlaceholder, FcLike } from 'react-icons/fc'
+import { FcLikePlaceholder, FcLike, FcMenu } from 'react-icons/fc'
 
 import random from './randomDate'
 
@@ -19,12 +19,12 @@ const App = () => {
 
 	const newImage = (date) => {
 		HttpClient.getApodByDay(date).then(apodData => {
-			setButtonLike(JSON.parse(localStorage.getItem(apodData.data.date)) ? <FcLike className="iconButton" /> : <FcLikePlaceholder className="iconButton"/>)
+			setButtonLike(JSON.parse(localStorage.getItem(apodData.data.date)) ? <FcLike className="iconButton" /> : <FcLikePlaceholder className="iconButton" />)
 			setApod(apodData.data)
 		})
 	}
-	const handelDate = () => {
-		let dt = random.randomDate(moment().format("YYYY-MM-DD"), "1995-06-16").format("YYYY-MM-DD");
+	const handelDate = (date) => {
+		let dt = date? date : random.randomDate(moment().format("YYYY-MM-DD"), "1995-06-16").format("YYYY-MM-DD");
 		setDate(dt)
 		newImage(dt);
 	}
@@ -45,40 +45,52 @@ const App = () => {
 			localStorage.removeItem(locaDate);
 			setButtonLike(<FcLikePlaceholder className="iconButton" />)
 		}
-
-
-
 	}
 
 	useEffect(() => {
 		HttpClient.getApodByDay(date).then(apodData => {
-			setButtonLike(JSON.parse(localStorage.getItem(apodData.data.date)) ? <FcLike className="iconButton" /> : <FcLikePlaceholder className="iconButton"/>)
+			setButtonLike(JSON.parse(localStorage.getItem(apodData.data.date)) ? <FcLike className="iconButton" /> : <FcLikePlaceholder className="iconButton" />)
 			setApod(apodData.data)
 		})
 	}, [])
 
-
 	return (
-		<div className="app">
-			<div className="content" style={{ backgroundImage: `url(/images/bg.svg)` }}>
+		<div>
+			{/* <div className="content" style={{ backgroundImage: `url(/images/bg.svg)` }}> */}
+			<div className="content">
 				<h1 className="title">NASA2DAY</h1>
-				<p className="subtitle">{ndate ? ndate : date}</p>
+				<p className="subtitle">{moment(ndate ? ndate : date).format("DD/MM/YYYY")}</p>
 				{apod && (
 					<div>
-						<div className="ImageTitle">
-							{apod.title}
+						<div className="ImageTitle">{apod.title}</div>
+						<div className="ImageDiv" style={{ backgroundImage: `url(${apod.url})` }}>
 						</div>
-						<img src={apod.url} alt="APOD" className="ImageDay" />
 						<div className="inLineButton">
 							<span className="button1" onClick={likeImage}>{buttonLike}</span>
-							<span className="button2" onClick={handelDate}><GiPerspectiveDiceSixFacesRandom className="iconButton" /></span>
+							<span className="button1" onClick={() => handelDate()}><GiPerspectiveDiceSixFacesRandom className="iconButton" /></span>
 						</div>
 						<div className="description">
-							<p>{apod.explanation}</p>
+							<p>{apod.explanation ? apod.explanation : "No description"}</p>
 						</div>
 					</div>
 				)}
-
+				<div className="LikedContainer">
+						{localStorage.length > 0 ?
+							Object.keys(localStorage).map((key, index) => {
+								return (
+									<div className="LikedCardItem" onClick={() => handelDate(key)} key={index}>
+										<div className="LikedCardItemTitle">
+											<span>{moment(key).format("DD/MM/YYYY")}</span>
+										</div>
+										<div className="LikedCardItemImage" style={{ backgroundImage: `url(${JSON.parse(localStorage.getItem(key)).url})` }}>
+										</div>
+									</div>
+								)
+							}) :
+							<div></div>
+							
+						}
+				</div>
 			</div>
 		</div>
 	)
