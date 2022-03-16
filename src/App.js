@@ -79,6 +79,9 @@ const App = () => {
 						</div>
 					</div>
 				)}
+				<div className="LikedTitle">
+					<FcLike className="iconButton" />
+				</div>
 				<div className="LikedContainer">
 					{localStorage.length > 0 ?
 						Object.keys(localStorage).map((key, index) => {
@@ -92,7 +95,7 @@ const App = () => {
 								</div>
 							)
 						}) :
-						<div></div>
+						<div className="LikedTitle">Nothing</div>
 
 					}
 				</div>
