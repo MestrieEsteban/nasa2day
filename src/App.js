@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react"
-import HttpClient from "./HttpClient"
-import './styles/App.scss'
+//Outside 
+import React, { useState, useEffect,  } from "react"
 import moment from 'moment'
 import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi'
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc'
+// import { BrowserRouter as NavLink } from "react-router-dom";
 
-import random from './randomDate'
+//Inside
+import './styles/AppBlack.scss'
+import { random, httpClient } from './import/appImport'
 
 let date = moment().format('YYYY-MM-DD')
-
 
 const App = () => {
 	const [apod, setApod] = useState({})
@@ -16,15 +17,19 @@ const App = () => {
 	const [ndate, setDate] = useState(dt)
 	const [buttonLike, setButtonLike] = useState()
 
+	// const {theme} = useContext(ThemeContextProvider)
+	// console.log(theme)
+
+
 
 	const newImage = (date) => {
-		HttpClient.getApodByDay(date).then(apodData => {
+		httpClient.getApodByDay(date).then(apodData => {
 			setButtonLike(JSON.parse(localStorage.getItem(apodData.data.date)) ? <FcLike className="iconButton" /> : <FcLikePlaceholder className="iconButton" />)
 			setApod(apodData.data)
 		})
 	}
 	const handelDate = (date) => {
-		let dt = date? date : random.randomDate(moment().format("YYYY-MM-DD"), "1995-06-16").format("YYYY-MM-DD");
+		let dt = date ? date : random.randomDate(moment().format("YYYY-MM-DD"), "1995-06-16").format("YYYY-MM-DD");
 		setDate(dt)
 		newImage(dt);
 	}
@@ -48,14 +53,14 @@ const App = () => {
 	}
 
 	useEffect(() => {
-		HttpClient.getApodByDay(date).then(apodData => {
+		httpClient.getApodByDay(date).then(apodData => {
 			setButtonLike(JSON.parse(localStorage.getItem(apodData.data.date)) ? <FcLike className="iconButton" /> : <FcLikePlaceholder className="iconButton" />)
 			setApod(apodData.data)
 		})
 	}, [])
 
 	return (
-		<div>
+		<>
 			{/* <div className="content" style={{ backgroundImage: `url(/images/bg.svg)` }}> */}
 			<div className="content">
 				<h1 className="title">NASA2DAY</h1>
@@ -75,24 +80,24 @@ const App = () => {
 					</div>
 				)}
 				<div className="LikedContainer">
-						{localStorage.length > 0 ?
-							Object.keys(localStorage).map((key, index) => {
-								return (
-									<div className="LikedCardItem" onClick={() => handelDate(key)} key={index}>
-										<div className="LikedCardItemTitle">
-											<span>{moment(key).format("DD/MM/YYYY")}</span>
-										</div>
-										<div className="LikedCardItemImage" style={{ backgroundImage: `url(${JSON.parse(localStorage.getItem(key)).url})` }}>
-										</div>
+					{localStorage.length > 0 ?
+						Object.keys(localStorage).map((key, index) => {
+							return (
+								<div className="LikedCardItem" onClick={() => handelDate(key)} key={index}>
+									<div className="LikedCardItemTitle">
+										<span>{moment(key).format("DD/MM/YYYY")}</span>
 									</div>
-								)
-							}) :
-							<div></div>
-							
-						}
+									<div className="LikedCardItemImage" style={{ backgroundImage: `url(${JSON.parse(localStorage.getItem(key)).url})` }}>
+									</div>
+								</div>
+							)
+						}) :
+						<div></div>
+
+					}
 				</div>
 			</div>
-		</div>
+		</>
 	)
 }
 
