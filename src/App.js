@@ -3,7 +3,6 @@ import React, { useState, useEffect,  } from "react"
 import moment from 'moment'
 import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi'
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc'
-// import { BrowserRouter as NavLink } from "react-router-dom";
 
 //Inside
 import './styles/AppBlack.scss'
